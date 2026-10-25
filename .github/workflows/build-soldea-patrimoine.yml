@@ -21,6 +21,7 @@ jobs:
 
       - name: Installer Node.js
         uses: actions/setup-node@v5
+
         with:
           node-version: '22'
 
@@ -56,6 +57,37 @@ jobs:
           npx cap sync android
           sed -i 's#<string name="app_name">.*</string>#<string name="app_name">Soldea Patrimoine</string>#' android/app/src/main/res/values/strings.xml
           sed -i 's#<string name="title_activity_main">.*</string>#<string name="title_activity_main">Soldea Patrimoine</string>#' android/app/src/main/res/values/strings.xml
+
+      - name: Appliquer la vraie icône SOLDEA Patrimoine
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 - <<'PY'
+          from PIL import Image, ImageDraw
+          import os, glob
+          source = "Soldea_Patrimoine_icone.jpg"
+          if not os.path.exists(source):
+              raise SystemExit("Le fichier Soldea_Patrimoine_icone.jpg est absent de la racine du dépôt.")
+          im = Image.open(source).convert("RGBA")
+          w, h = im.size
+          side = min(w, h)
+          im = im.crop(((w-side)//2, (h-side)//2, (w+side)//2, (h+side)//2))
+          mask = Image.new("L", im.size, 0)
+          draw = ImageDraw.Draw(mask)
+          radius = int(side * 0.16)
+          draw.rounded_rectangle((1, 1, side-2, side-2), radius=radius, fill=255)
+          im.putalpha(mask)
+          sizes = {"mdpi":48, "hdpi":72, "xhdpi":96, "xxhdpi":144, "xxxhdpi":192}
+          res = "android/app/src/main/res"
+          for density, size in sizes.items():
+              folder = os.path.join(res, "mipmap-" + density)
+              os.makedirs(folder, exist_ok=True)
+              icon = im.resize((size, size), Image.Resampling.LANCZOS)
+              icon.save(os.path.join(folder, "ic_launcher.png"), optimize=True)
+              icon.save(os.path.join(folder, "ic_launcher_round.png"), optimize=True)
+          for path in glob.glob(os.path.join(res, "mipmap-anydpi-v26", "ic_launcher*.xml")):
+              os.remove(path)
+          print("Icône SOLDEA Patrimoine installée dans toutes les résolutions Android.")
+          PY
 
       - name: Construire l'APK Android
         working-directory: android
