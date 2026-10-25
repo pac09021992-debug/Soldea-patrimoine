@@ -1,0 +1,19 @@
+{
+  "name": "Soldea Patrimoine",
+  "short_name": "Soldea Patrimoine",
+  "description": "Suivi personnel du patrimoine",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1b31",
+  "theme_color": "#0a1b31",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

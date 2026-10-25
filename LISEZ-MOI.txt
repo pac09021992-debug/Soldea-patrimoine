@@ -1,0 +1,16 @@
+SOLDEA PATRIMOINE — version installable (PWA)
+
+Contenu :
+- index.html : l'application
+- manifest.webmanifest : informations d'installation
+- service-worker.js : mise en cache pour permettre une ouverture hors ligne après le premier chargement
+- icon.svg : icône de l'application
+
+Installation :
+1. Décompressez le ZIP.
+2. Téléversez les 4 fichiers à la racine du dépôt GitHub utilisé pour publier SoldeaPatrimoine, en remplaçant l'ancien index.html si c'est bien le dépôt de cette application.
+3. Dans GitHub, vérifiez Settings > Pages et attendez que le site soit publié en HTTPS.
+4. Ouvrez l'adresse du site dans Chrome sur Android.
+5. Menu ⋮ > « Installer l'application » (ou « Ajouter à l'écran d'accueil »).
+
+Important : gardez ce projet séparé de Soldea Budget. Les données enregistrées dans le navigateur ne sont pas automatiquement synchronisées entre les deux applications ou entre appareils.
